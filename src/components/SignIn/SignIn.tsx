@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react"
+import React, { useState, useContext, useCallback } from "react"
 import { Row, Col, Card, Form, Input, Button, notification } from "antd"
 import { UserOutlined, LockOutlined } from "@ant-design/icons"
 import { Store } from "antd/lib/form/interface"
@@ -8,7 +8,7 @@ import { RootContext } from "../RootContext"
 export default () => {
     const [loading, setLoading] = useState(false)
     const { setAuthenticated, setToken } = useContext(RootContext)
-    const onFinish = async (values: Store) => {
+    const onFinish = useCallback(async (values: Store) => {
         setLoading(true)
         try {
             const { headers } = await api.post("/login", values)
@@ -23,7 +23,7 @@ export default () => {
         } finally {
             setLoading(false)
         }
-    }
+    }, [setAuthenticated, setToken])
 
     return (
         <Row justify="center" align="middle" style={{ height: "100vh" }}>
